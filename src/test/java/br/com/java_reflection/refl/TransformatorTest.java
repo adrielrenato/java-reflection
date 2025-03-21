@@ -1,5 +1,6 @@
 package br.com.java_reflection.refl;
 
+import br.com.java_reflection.Endereco;
 import br.com.java_reflection.Pessoa;
 import br.com.java_reflection.PessoaDTO;
 import org.junit.jupiter.api.Assertions;
@@ -10,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 class TransformatorTest {
 
     private Pessoa pessoa = new Pessoa(1, "Adriel", "111.111.111-11");
+    private Endereco endereco = new Endereco("Rua 10", 20);
 
     @Test
     void shouldTransform() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -23,5 +25,17 @@ class TransformatorTest {
         Assertions.assertInstanceOf(PessoaDTO.class, pessoaDTO);
         Assertions.assertEquals(pessoa.getNome(), pessoaDTO.getNome());
         Assertions.assertEquals(pessoa.getCpf(), pessoaDTO.getCpf());
+    }
+
+    @Test
+    void shouldNotTransform() {
+        // ASSERT
+        Assertions.assertThrows(ClassNotFoundException.class, () -> {
+            // ARRANGE
+            Transformator transformator = new Transformator();
+
+            // ACT
+            transformator.transform(endereco);
+        });
     }
 }
